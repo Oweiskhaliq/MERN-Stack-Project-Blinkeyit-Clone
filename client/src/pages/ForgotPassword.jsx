@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { IoMdEyeOff } from "react-icons/io";
-import { IoEye } from "react-icons/io5";
 import toast from "react-hot-toast";
 import Axiox from "../Utils/Axios";
 import summaryApi from "../common/summaryApi";
@@ -37,11 +35,14 @@ const ForgotPassword = () => {
       }
       if (response.data.success) {
         toast.success(response.data.message);
+
+        navigate("/forgot-password-otp-verification", {
+          state: data,
+        });
+
         setData({
           email: "",
         });
-
-        navigate("/forgot-password-otp-verification");
       }
     } catch (error) {
       axiosToastError(error);

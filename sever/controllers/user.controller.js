@@ -161,6 +161,10 @@ export const loginController = async (request, response) => {
       message: "login Successfully.",
       success: true,
       error: false,
+      data: {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      },
     });
   } catch (error) {
     return response.status(500).json({
@@ -326,7 +330,7 @@ export const resetPassword = async (request, response) => {
     //check the newpassword and confirmPAssword
     if (newPassword !== confirmPassword) {
       return response.status(400).json({
-        message: " newPassword and confrimPassword must be Same.",
+        message: " new Password and confrim Password must be Same.",
         error: true,
         success: false,
       });

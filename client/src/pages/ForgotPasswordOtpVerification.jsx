@@ -1,47 +1,52 @@
-import React, { useState } from "react";
-import { IoMdEyeOff } from "react-icons/io";
-import { IoEye } from "react-icons/io5";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import Axiox from "../Utils/Axios";
 import summaryApi from "../common/summaryApi";
 import axiosToastError from "../Utils/axiosToastError";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const ForgotPasswordOtpVerification = () => {
-  const [data, setData] = useState({
-    email: "",
-  });
-  const handlerChanger = (e) => {
-    const { name, value } = e.target;
-    setData((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
+  const [data, setData] = useState(["", "", "", "", "", ""]);
+  //got to next input
+  const inputRef = useRef([]);
+
+  // geting email from
+  const location = useLocation();
+
+  //checking if the user direct come to otp verification
+  useEffect(() => {
+    if (!location?.state?.email) {
+      navigate("/forgot-password");
+    }
+  }, []);
   const navigate = useNavigate();
 
-  const valideValue = Object.values(data).every((el) => el);
+  const valideValue = data.every((el) => el);
 
   const handlerSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await Axiox({
-        ...summaryApi.forgot_password,
-        data: data,
+        ...summaryApi.forgot_password_otp_verification,
+        data: {
+          otp: data.join(""),
+          email: location.state.email,
+        },
       });
       if (response.data.error) {
         toast.error(response.data.message);
       }
       if (response.data.success) {
         toast.success(response.data.message);
-        setData({
-          email: "",
-        });
+        setData(["", "", "", "", "", ""]);
 
-        navigate("/forgot-password-otp-verification");
+        navigate("/reset-password", {
+          state: {
+            data: response.data,
+            email: location.state.email,
+          },
+        });
       }
     } catch (error) {
       axiosToastError(error);
@@ -51,21 +56,41 @@ const ForgotPasswordOtpVerification = () => {
     <section className="min-h-[78vh] w-full container mx-auto px-2 ">
       <div className="bg-white  w-full my-6 mx-auto max-w-lg p-7 rounded-xl shadow-xl">
         <p className=" text-center text-green-800 font-extrabold">
-          Forgot Password
+          OTP Verification.
         </p>
 
         <form className="grid gap-4 mt-4 shadow-lg" onSubmit={handlerSubmit}>
           <div className="grid gap-1 ">
-            <label htmlFor="email">Email :</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={data.email}
-              className="bg-blue-50 p-2 border rounded-lg outline-none focus:border-primary-200"
-              onChange={handlerChanger}
-              placeholder="Enter your email."
-            />
+            <label htmlFor="otp">Enter your OTP :</label>
+            <div className="flex items-center gap-2 justify-between">
+              {data.map((element, index) => {
+                return (
+                  <input
+                    key={"otp" + index}
+                    type="text"
+                    id="otp"
+                    ref={(ref) => {
+                      inputRef.current[index] = ref;
+                      return ref;
+                    }}
+                    value={data[index]}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const newValue = [...data];
+                      newValue[index] = value;
+                      setData(newValue);
+
+                      // got next input
+                      if (value && index < 5) {
+                        inputRef.current[index + 1].focus();
+                      }
+                    }}
+                    maxLength={1}
+                    className="bg-blue-50 w-full max-w-16 p-2 border rounded-lg outline-none focus:border-primary-200 text-center font-semibold"
+                  />
+                );
+              })}
+            </div>
           </div>
 
           <button
@@ -74,7 +99,7 @@ const ForgotPasswordOtpVerification = () => {
               valideValue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500"
             }  text-white py-2 rounded font-semibold my-2 -tracking-wide`}
           >
-            Send OTP
+            Verify OTP
           </button>
         </form>
         <p>
