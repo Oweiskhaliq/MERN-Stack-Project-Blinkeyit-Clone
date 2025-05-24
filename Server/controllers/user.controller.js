@@ -438,7 +438,7 @@ export const RefreshToken = async (request, response) => {
   try {
     const refreshToken =
       request.cookies.refreshToken ||
-      request?.header?.authorization?.split(" ")[1];
+      request?.headers?.authorization?.split(" ")[1];
     if (!refreshToken) {
       return response.status(400).json({
         message: "Invalid token",

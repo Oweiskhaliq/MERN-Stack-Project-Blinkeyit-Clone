@@ -4,7 +4,7 @@ const auth = async (request, response, next) => {
     //access the access token
     const token =
       request.cookies.accessToken ||
-      request?.header?.authorization?.split(" ")[1];
+      request?.headers?.authorization?.split(" ")[1];
     if (!token) {
       return response.status(401).json({
         message: "provide Access Token",
