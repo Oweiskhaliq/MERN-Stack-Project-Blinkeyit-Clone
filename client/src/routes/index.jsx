@@ -1,12 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Home from "../pages/home";
-import SearchPage from "../pages/SearchPage";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
 import ForgotPassword from "../pages/ForgotPassword";
 import ForgotPasswordOtpVerification from "../pages/ForgotPasswordOtpVerification";
+import Home from "../pages/home";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 import ResetPassword from "../pages/ResetPassword";
+import SearchPage from "../pages/SearchPage";
+import UserMobileMenu from "../pages/UserMobileMenu";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "reset-password",
         element: <ResetPassword />,
+      },
+      {
+        path: "user-mobile",
+        element: <UserMobileMenu />,
       },
     ],
   },

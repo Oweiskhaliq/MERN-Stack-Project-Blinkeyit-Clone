@@ -1,48 +1,60 @@
-import React, { useState } from "react";
-import { IoMdEyeOff } from "react-icons/io";
-import { IoEye } from "react-icons/io5";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import Axiox from "../Utils/Axios";
-import summaryApi from "../common/summaryApi";
-import axiosToastError from "../Utils/axiosToastError";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import SummaryApi from "../common/summaryApi";
+import { setUserDetails } from "../store/userSlice";
+import Axios from "../Utils/Axios";
+import AxiosToastError from "../Utils/axiosToastError";
+import fetchedUserDetails from "../Utils/fetchedUserDetails";
 
 const Login = () => {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
-  const handlerChanger = (e) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setData((prev) => {
+
+    setData((preve) => {
       return {
-        ...prev,
+        ...preve,
         [name]: value,
       };
     });
   };
-  const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
 
   const valideValue = Object.values(data).every((el) => el);
 
-  const handlerSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await Axiox({
-        ...summaryApi.login,
+      const response = await Axios({
+        ...SummaryApi.login,
         data: data,
       });
+
       if (response.data.error) {
         toast.error(response.data.message);
       }
+
       if (response.data.success) {
         toast.success(response.data.message);
-
-        //save access and refresh token in local storage
-        localStorage.setItem("accessToken", response.data.data.accessToken);
+        localStorage.setItem("accesstoken", response.data.data.accesstoken);
         localStorage.setItem("refreshToken", response.data.data.refreshToken);
+
+        const userDetails = await fetchedUserDetails();
+        if (userDetails && userDetails.data && userDetails.data._id) {
+          dispatch(setUserDetails(userDetails.data));
+        }
+        // dispatch(setUserDetails(userDetails.data.data));
+        console.log(userDetails.data.data);
 
         setData({
           email: "",
@@ -51,68 +63,67 @@ const Login = () => {
         navigate("/");
       }
     } catch (error) {
-      axiosToastError(error);
+      AxiosToastError(error);
     }
   };
   return (
-    <section className="min-h-[78vh] w-full container mx-auto px-2 ">
-      <div className="bg-white  w-full my-6 mx-auto max-w-lg p-7 rounded-xl shadow-xl">
-        <p className=" text-center text-green-800 font-extrabold">Login</p>
-
-        <form className="grid gap-4 mt-4 shadow-lg" onSubmit={handlerSubmit}>
-          <div className="grid gap-1 ">
+    <section className="w-full container mx-auto px-2">
+      <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
+        <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
+          <div className="grid gap-1">
             <label htmlFor="email">Email :</label>
             <input
               type="email"
-              name="email"
               id="email"
+              className="bg-blue-50 p-2 border rounded outline-none focus:border-primary-200"
+              name="email"
               value={data.email}
-              className="bg-blue-50 p-2 border rounded-lg outline-none focus:border-primary-200"
-              onChange={handlerChanger}
-              placeholder="Enter your email."
+              onChange={handleChange}
+              placeholder="Enter your email"
             />
           </div>
-
-          <div className="grid gap-1 ">
+          <div className="grid gap-1">
             <label htmlFor="password">Password :</label>
-            <div className="bg-blue-50 p-2 border rounded-lg flex items-center focus-within:border-primary-200">
+            <div className="bg-blue-50 p-2 border rounded flex items-center focus-within:border-primary-200">
               <input
                 type={showPassword ? "text" : "password"}
-                name="password"
                 id="password"
-                value={data.password}
                 className="w-full outline-none"
-                onChange={handlerChanger}
-                placeholder="Enter your password."
+                name="password"
+                value={data.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
               />
               <div
-                onClick={() => setShowPassword((prev) => !prev)}
+                onClick={() => setShowPassword((preve) => !preve)}
                 className="cursor-pointer"
               >
-                {!showPassword ? <IoMdEyeOff size={20} /> : <IoEye size={20} />}
+                {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
               </div>
             </div>
+            <Link
+              to={"/forgot-password"}
+              className="block ml-auto hover:text-primary-200"
+            >
+              Forgot password ?
+            </Link>
           </div>
-          <Link
-            to={"/forgot-password"}
-            className="block ml-auto underline text-blue-800 hover:text-primary-200"
-          >
-            Forgot Password ?
-          </Link>
+
           <button
             disabled={!valideValue}
-            className={`${
+            className={` ${
               valideValue ? "bg-green-800 hover:bg-green-700" : "bg-gray-500"
-            }  text-white py-2 rounded font-semibold my-2 -tracking-wide`}
+            }    text-white py-2 rounded font-semibold my-3 tracking-wide`}
           >
             Login
           </button>
         </form>
+
         <p>
-          Don't have account ?{" "}
+          Don't have account?{" "}
           <Link
-            to={"/Register"}
-            className="font-semibold text-gray-700 hover:text-green-800"
+            to={"/register"}
+            className="font-semibold text-green-700 hover:text-green-800"
           >
             Register
           </Link>
