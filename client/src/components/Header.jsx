@@ -24,7 +24,9 @@ const Header = () => {
   const redirecToLoginPage = () => {
     navigate("/login");
   };
-
+  const handleCloseUserMenu = () => {
+    setOpenUserMenu(false);
+  };
   const handleMobileUser = () => {
     if (!user._id) {
       navigate("/login");
@@ -32,6 +34,7 @@ const Header = () => {
     }
     navigate("/user-mobile");
   };
+
   return (
     <header className="h-24 lg:h-20 lg:shadow-lg sticky top-0   flex  justify-center flex-col gap-1 bg-white">
       {!(isMobile && isSearchPage) && (
@@ -88,7 +91,7 @@ const Header = () => {
                   {openUserMenu && (
                     <div className="absolute right-0 top-8">
                       <div className="bg-white rounded p-2 min-w-52 lg:shadow-lg">
-                        <UserMenu />
+                        <UserMenu close={handleCloseUserMenu} />
                       </div>
                     </div>
                   )}

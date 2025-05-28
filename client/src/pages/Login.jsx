@@ -50,19 +50,18 @@ const Login = () => {
         localStorage.setItem("refreshToken", response.data.data.refreshToken);
 
         const userDetails = await fetchedUserDetails();
-        if (userDetails && userDetails.data && userDetails.data._id) {
-          dispatch(setUserDetails(userDetails.data));
-        }
-        // dispatch(setUserDetails(userDetails.data.data));
-        console.log(userDetails.data.data);
+        const resData = userDetails.data.data;
+        dispatch(setUserDetails(resData));
 
         setData({
           email: "",
           password: "",
         });
+
         navigate("/");
       }
     } catch (error) {
+      console.log(error);
       AxiosToastError(error);
     }
   };

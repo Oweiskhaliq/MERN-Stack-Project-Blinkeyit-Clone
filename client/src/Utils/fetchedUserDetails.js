@@ -1,9 +1,9 @@
 import summaryApi from "../common/summaryApi";
 import Axios from "./Axios";
 
-const fetchedUserDetails = () => {
+const fetchedUserDetails = async () => {
   try {
-    const response = Axios({
+    const response = await Axios({
       ...summaryApi.userDetails,
     });
 

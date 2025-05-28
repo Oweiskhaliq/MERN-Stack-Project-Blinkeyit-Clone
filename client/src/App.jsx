@@ -10,11 +10,17 @@ import fetchedUserDetails from "./Utils/fetchedUserDetails";
 
 function App() {
   const dispatch = useDispatch();
+  // Fetch user details from backend
   const fetchUser = async () => {
-    const userData = await fetchedUserDetails();
-    dispatch(setUserDetails(userData.data.data));
+    try {
+      const userData = await fetchedUserDetails();
+      dispatch(setUserDetails(userData.data.data));
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+    }
   };
 
+  // On first load, fetch user from server
   useEffect(() => {
     fetchUser();
   }, []);
