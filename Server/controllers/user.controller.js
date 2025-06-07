@@ -367,22 +367,23 @@ export const resetPassword = async (request, response) => {
   }
 };
 
-// upload Avator
-export const uploadAvator = async (request, response) => {
+// upload avatar
+export const uploadAvatar = async (request, response) => {
   try {
     const userId = request.userId; //auth meddleware
     const image = request.file; // multer middleware
+    console.log(image);
     // upload PIc
     const upload = await uploadImageCloudinary(image);
     const updateUser = await UserModel.findByIdAndUpdate(userId, {
-      avtar: upload.url,
+      avatar: upload.url,
     });
     return response.json({
       message: "Image Uploaded Successfuly",
       error: false,
       succes: true,
       data: {
-        avator: upload.url,
+        avatar: upload.url,
         _id: userId,
       },
     });
@@ -407,18 +408,15 @@ export const updateUserDetails = async (request, response) => {
       const slat = await bcryptjs.genSalt(10);
       await bcryptjs.hash(password, slat);
     }
-    const updateUser = await UserModel.updateOne(
-      { _id: userId },
-      {
-        ...(name && { name: name }),
-        ...(email && { email: email }),
-        ...(password && { password: hashPassword }),
-        ...(mobile && { mobile: mobile }),
-      }
-    );
+    const updateUser = await UserModel.findByIdAndUpdate(userId, {
+      ...(name && { name: name }),
+      ...(email && { email: email }),
+      ...(mobile && { mobile: mobile }),
+      ...(password && { password: hashPassword }),
+    });
 
     return response.json({
-      message: "User Updated Successfully.",
+      message: "Updated Successfully.",
       error: false,
       succes: true,
       data: updateUser,

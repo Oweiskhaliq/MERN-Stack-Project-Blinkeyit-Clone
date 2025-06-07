@@ -5,6 +5,8 @@ import express from "express";
 import helmet from "helmet";
 import morgon from "morgan";
 import connectDB from "./config/connectDB.js";
+import categoryRouter from "./routes/category.route.js";
+import ImageRouter from "./routes/uploadImage.routes.js";
 import userRouter from "./routes/user.route.js";
 dotenv.config();
 
@@ -36,6 +38,8 @@ app.get("/", (request, response) => {
 
 // create user route
 app.use("/api/user", userRouter);
+app.use("/api/category", categoryRouter);
+app.use("/api/file", ImageRouter);
 
 connectDB().then(() => {
   app.listen(PORT, () => {

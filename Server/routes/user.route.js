@@ -7,7 +7,7 @@ import {
   registerUserController,
   resetPassword,
   updateUserDetails,
-  uploadAvator,
+  uploadAvatar,
   userDetails,
   verifyEmailController,
   verifyForgotPassword,
@@ -24,7 +24,7 @@ userRouter.get("/logout", auth, logoutController);
 userRouter.put("/forgot-password", forgetPasswordController);
 userRouter.put("/verify-forgot-password-otp", verifyForgotPassword);
 userRouter.put("/reset-password", resetPassword);
-userRouter.put("/upload-avator", auth, upload.single("avator"), uploadAvator);
+userRouter.put("/upload-avatar", auth, upload.single("avatar"), uploadAvatar);
 userRouter.put("/update-user", auth, updateUserDetails);
 userRouter.post("/refresh-token", RefreshToken);
 userRouter.get("/user-details", auth, userDetails);
