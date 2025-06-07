@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
+import AdminPermissions from "../layout/AdminPermissions";
 import Dashboard from "../layout/Dashboard";
 import Address from "../pages/Address";
 import Category from "../pages/Category";
@@ -8,6 +9,7 @@ import ForgotPasswordOtpVerification from "../pages/ForgotPasswordOtpVerificatio
 import Home from "../pages/home";
 import Login from "../pages/Login";
 import MyOrders from "../pages/MyOrders";
+import ProductAdmin from "../pages/ProductAdmin";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
 import ResetPassword from "../pages/ResetPassword";
@@ -70,15 +72,35 @@ const router = createBrowserRouter([
           },
           {
             path: "category",
-            element: <Category />,
+            element: (
+              <AdminPermissions>
+                <Category />
+              </AdminPermissions>
+            ),
           },
           {
             path: "sub-category",
-            element: <SubCategory />,
+            element: (
+              <AdminPermissions>
+                <SubCategory />
+              </AdminPermissions>
+            ),
           },
           {
             path: "upload-product",
-            element: <UploadProduct />,
+            element: (
+              <AdminPermissions>
+                <UploadProduct />
+              </AdminPermissions>
+            ),
+          },
+          {
+            path: "products",
+            element: (
+              <AdminPermissions>
+                <ProductAdmin />
+              </AdminPermissions>
+            ),
           },
         ],
       },

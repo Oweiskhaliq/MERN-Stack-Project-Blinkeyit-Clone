@@ -36,12 +36,12 @@ const Header = () => {
   };
 
   return (
-    <header className="h-24 lg:h-20 lg:shadow-lg sticky top-0   flex  justify-center flex-col gap-1 bg-white">
+    <header className="h-24 lg:h-20 lg:shadow-md sticky top-0 z-40 flex flex-col justify-center gap-1 bg-white">
       {!(isMobile && isSearchPage) && (
-        <div className="container mx-auto flex items-center h-full px-2 justify-between">
+        <div className="container mx-auto flex items-center px-2 justify-between">
           {/* Logo */}
           <Link to={"/"} className="h-full">
-            <div className="h-full flex  justify-center items-center">
+            <div className="h-full flex justify-center items-center">
               <img
                 src={logo}
                 width={170}
@@ -74,12 +74,12 @@ const Header = () => {
             </button>
 
             {/* Disktop  */}
-            <div className="hidden lg:flex gap-10">
+            <div className="hidden lg:flex items-center gap-10">
               {user._id ? (
                 <div className="relative ">
                   <div
                     onClick={() => setOpenUserMenu((Prev) => !Prev)}
-                    className="flex items-center gap-1 cursor-pointer"
+                    className="flex select-none items-center gap-1 cursor-pointer"
                   >
                     <p>Account</p>
                     {openUserMenu ? (
@@ -89,7 +89,7 @@ const Header = () => {
                     )}
                   </div>
                   {openUserMenu && (
-                    <div className="absolute right-0 top-8">
+                    <div className="absolute right-0 top-12">
                       <div className="bg-white rounded p-2 min-w-52 lg:shadow-lg">
                         <UserMenu close={handleCloseUserMenu} />
                       </div>
@@ -97,17 +97,17 @@ const Header = () => {
                   )}
                 </div>
               ) : (
-                <button onClick={redirecToLoginPage} className="text-lg p-2">
+                <button onClick={redirecToLoginPage} className="text-lg px-2">
                   Login
                 </button>
               )}
 
               {/* Cart Icons */}
-              <button className="flex items-center gap-2 bg-green-800 hover:bg-green-700 hover:text-xl rounded-lg p-3 text-white">
+              <button className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white">
                 <div className="animate-bounce ">
                   <BsCart4 size={26} />
                 </div>
-                <div className="font-semibold">
+                <div className="font-semibold text-sm">
                   <p>My cart</p>
                 </div>
               </button>
