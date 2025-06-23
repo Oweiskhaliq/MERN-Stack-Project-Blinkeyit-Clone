@@ -61,6 +61,30 @@ const summaryApi = {
     url: "/api/category/delete",
     method: "delete",
   },
+  createSubCategory: {
+    url: "api/subcategory/create",
+    method: "POST",
+  },
+  getSubCategory: {
+    url: "api/subcategory/get",
+    method: "POST",
+  },
+  updateSubCategory: {
+    url: "api/subcategory/update",
+    method: "PUT",
+  },
+  deleteSubCategory: {
+    url: "api/subcategory/delete",
+    method: "DELETE",
+  },
+  createProduct: {
+    url: "api/product/create",
+    method: "POST",
+  },
+  getProduct: {
+    url: "api/product/get",
+    method: "POST",
+  },
 };
 
 export default summaryApi;

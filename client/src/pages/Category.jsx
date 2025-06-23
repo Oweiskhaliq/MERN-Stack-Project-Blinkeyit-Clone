@@ -25,6 +25,11 @@ const Category = () => {
     categoryId: "",
   });
 
+  // const allCategory = useSelector((state) => state.products.allCategory);
+  // useEffect(() => {
+  //   setCategoryData(allCategory);
+  // }, [allCategory]);
+
   const fetchedCategory = async () => {
     try {
       setLoading(true);

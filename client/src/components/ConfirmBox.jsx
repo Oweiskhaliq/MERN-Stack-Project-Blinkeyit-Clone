@@ -5,16 +5,12 @@ const ConfirmBox = ({ close, cancel, confrim }) => {
     <section className="fixed top-0 bottom-0 left-0 right-0 bg-neutral-800 bg-opacity-70 z-50 flex items-center justify-center">
       <div className="bg-white w-full max-w-md p-4 rounded ">
         <div className="flex justify-between items-center">
-          <h1 className="font-semibold text-red-600">
-            Category Will Be Delete Parmanently!
-          </h1>
+          <h1 className="font-semibold text-red-600">Parmanently delete!</h1>
           <button onClick={close}>
             <MdClose size={25} />
           </button>
         </div>
-        <p className="my-4 text-sm">
-          Are You Sure to delete this category parmanently?
-        </p>
+        <p className="my-4 text-sm">Are You Sure to delete this parmanently?</p>
         <div className="w-fit ml-auto flex items-center gap-3">
           <button
             onClick={cancel}
