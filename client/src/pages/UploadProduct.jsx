@@ -134,14 +134,13 @@ const UploadProduct = () => {
         });
       }
     } catch (error) {
-      console.log(error);
       AxiosToastError(error);
     }
   };
   return (
     <section>
       <div className="bg-white p-2 shadow-md flex items-center justify-between">
-        <h2 className="font-semibold ">Upload Category</h2>
+        <h2 className="font-semibold ">Upload Product</h2>
       </div>
       {/* upload product form */}
       <div className="grid p-3">

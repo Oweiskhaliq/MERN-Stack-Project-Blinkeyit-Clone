@@ -6,7 +6,11 @@ import "./App.css";
 import summaryApi from "./common/summaryApi";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import { setAllCategory, setAllSubCategory } from "./store/productsSlice";
+import {
+  setAllCategory,
+  setAllSubCategory,
+  setLoadingCategory,
+} from "./store/productsSlice";
 import { setUserDetails } from "./store/userSlice";
 import Axios from "./Utils/Axios";
 import fetchedUserDetails from "./Utils/fetchedUserDetails";
@@ -25,6 +29,7 @@ function App() {
   // fetch Category and set to store
   const fetchedCategory = async () => {
     try {
+      dispatch(setLoadingCategory(true));
       const response = await Axios({
         ...summaryApi.getCategory,
       });
@@ -35,6 +40,8 @@ function App() {
       }
     } catch (error) {
       AxiosToastError(error);
+    } finally {
+      dispatch(setLoadingCategory(false));
     }
   };
 

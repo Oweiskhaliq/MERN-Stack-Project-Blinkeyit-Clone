@@ -15,6 +15,7 @@ const AddMoreFieldComponent = ({ close, value, onChange, submit }) => {
           className="bg-blue-50 p-2 py-3 border outline-none focus-within:border-primary-200 rounded w-full"
           placeholder="Enter the Field Name"
           value={value}
+          required
           onChange={onChange}
         />
         <button

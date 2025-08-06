@@ -180,9 +180,7 @@ const UploadSubCategoryModel = ({ close, fetchData }) => {
                   });
                 }}
               >
-                <option disabled value={""}>
-                  Select Category
-                </option>
+                <option value={""}>Select Category</option>
                 {allCategory.map((category) => (
                   <option
                     key={category?._id + "subCategory"}

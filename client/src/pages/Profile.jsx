@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaUserCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import summaryApi from "../common/summaryApi";
 import UserProfileAvatarEdit from "../components/UserProfileAvtatorEdit";
 import { setUserDetails } from "../store/userSlice";
 import Axios from "../Utils/Axios";
 import AxiosToastError from "../Utils/axiosToastError";
 import fetchedUserDetails from "../Utils/fetchedUserDetails";
+import summaryApi from "../common/SummaryApi";
 
 const Profile = () => {
   const dispatch = useDispatch();

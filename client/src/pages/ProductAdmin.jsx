@@ -65,7 +65,7 @@ const ProductAdmin = () => {
   };
 
   useEffect(() => {
-    const flag = true;
+    let flag = true;
     const interval = setTimeout(() => {
       if (flag) {
         fetchedProduct();
@@ -102,7 +102,11 @@ const ProductAdmin = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {productData.map((p, index) => {
               return (
-                <ProductCardAdmin key={p._id + index + "product"} data={p} />
+                <ProductCardAdmin
+                  key={p._id + index + "product"}
+                  data={p}
+                  fetchedProduct={fetchedProduct}
+                />
               );
             })}
           </div>

@@ -6,10 +6,13 @@ import Address from "../pages/Address";
 import Category from "../pages/Category";
 import ForgotPassword from "../pages/ForgotPassword";
 import ForgotPasswordOtpVerification from "../pages/ForgotPasswordOtpVerification";
-import Home from "../pages/home";
+
+import Home from "../pages/Home";
 import Login from "../pages/Login";
 import MyOrders from "../pages/MyOrders";
 import ProductAdmin from "../pages/ProductAdmin";
+import ProductDisplayPage from "../pages/ProductDisplayPage";
+import ProductsListPage from "../pages/ProductsListPage";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
 import ResetPassword from "../pages/ResetPassword";
@@ -103,6 +106,19 @@ const router = createBrowserRouter([
             ),
           },
         ],
+      },
+      {
+        path: ":category/:id",
+        children: [
+          {
+            path: ":subCategory/:subId",
+            element: <ProductsListPage />,
+          },
+        ],
+      },
+      {
+        path: "/product/:product/:id",
+        element: <ProductDisplayPage />,
       },
     ],
   },
