@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
-import { FaArrowLeft } from "react-icons/fa";
 import useMobile from "../hooks/useMobile";
 
 const Search = () => {
@@ -10,6 +9,10 @@ const Search = () => {
   const loaction = useLocation();
   const [isSearchPage, setIsSearchPage] = useState(false);
   const [isMobile] = useMobile();
+  // set input default value
+  const parms = useLocation();
+  const searchQuery = parms?.search?.slice(3);
+
   useEffect(() => {
     const isSearch = location.pathname === "/search";
     setIsSearchPage(isSearch);
@@ -17,6 +20,13 @@ const Search = () => {
 
   const redirectToSearchPage = () => {
     navigate("/search");
+  };
+
+  //hanlde change input
+  const handleChnage = (e) => {
+    const value = e.target.value;
+    const url = `/search?q=${value}`;
+    navigate(url);
   };
 
   return (
@@ -78,6 +88,8 @@ const Search = () => {
               placeholder="Search atta daal and More."
               className="w-full h-full bg-transparent outline-none"
               autoFocus
+              defaultValue={searchQuery}
+              onChange={handleChnage}
             />
           </div>
         )}

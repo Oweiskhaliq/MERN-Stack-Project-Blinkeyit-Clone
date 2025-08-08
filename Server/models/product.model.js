@@ -54,7 +54,7 @@ const productSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-// create a text index for the name field
+// create a text index for the name and descriotion field
 productSchema.index(
   {
     name: "text",
