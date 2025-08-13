@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { DisplayPriceInPKR } from "../Utils/DisplayPriceInPKR";
 import { PriceWithDiscount } from "../Utils/PriceWithDiscount";
 import { ValidURLConverter } from "../Utils/ValidURLConverter";
+import AddToCartButton from "./AddToCartButton";
 
 const CardProudcts = ({ data }) => {
   const url = `/product/${ValidURLConverter(data.name)}/${data._id}`;
+  const [loading, setLoading] = useState(false);
 
   return (
     <Link
@@ -40,9 +43,7 @@ const CardProudcts = ({ data }) => {
         </div>
         <div className="">
           {data.stock ? (
-            <button className="bg-green-600 hover:bg-green-700 text-white px-2 lg:px-4 p-1 rounded">
-              Add
-            </button>
+            <AddToCartButton data={data} />
           ) : (
             <p className="text-red-500  text-xs text-center">Out of stock</p>
           )}

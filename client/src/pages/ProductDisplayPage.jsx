@@ -5,6 +5,7 @@ import image2 from "../assets/Best_Prices_Offers.png";
 import image1 from "../assets/minute_delivery.png";
 import image3 from "../assets/Wide_Assortment.png";
 import summaryApi from "../common/summaryApi";
+import AddToCartButton from "../components/AddToCartButton";
 import Divider from "../components/Divider";
 import Axios from "../Utils/Axios";
 import AxiosToastError from "../Utils/axiosToastError";
@@ -120,7 +121,7 @@ const ProductDisplayPage = () => {
         </div>
 
         {/* more detail of product */}
-        <div className="my-4 grid gap-3">
+        <div className="my-4  hidden lg:grid gap-3">
           {/* description */}
           <div className="">
             <p className="font-semibold">Description</p>
@@ -179,9 +180,9 @@ const ProductDisplayPage = () => {
         {productData.stock <= 0 ? (
           <p className="text-lg text-red-500 py-2 ">Out Of Stack</p>
         ) : (
-          <button className="my-4 px-4 py-1 bg-green-600 hover:bg-green-700 rounded  text-white">
-            Add
-          </button>
+          <div className="py-4">
+            <AddToCartButton data={productData} />
+          </div>
         )}
 
         <Divider />
@@ -222,6 +223,30 @@ const ProductDisplayPage = () => {
                 other categories.
               </p>
             </div>
+          </div>
+
+          {/* product content for mobile version */}
+          <div className="my-4 grid lg:hidden gap-3">
+            {/* description */}
+            <div className="">
+              <p className="font-semibold">Description</p>
+              <p>{productData.description}</p>
+            </div>
+            {/* unit */}
+            <div className="">
+              <p className="font-semibold">Unit</p>
+              <p>{productData.unit}</p>
+            </div>
+            {/* more detail */}
+            {productData?.more_details &&
+              Object.keys(productData?.more_details).map((ele, index) => {
+                return (
+                  <div key={ele + index} className="">
+                    <p className="font-semibold">{ele}</p>
+                    <p>{productData?.more_details[ele]}</p>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>

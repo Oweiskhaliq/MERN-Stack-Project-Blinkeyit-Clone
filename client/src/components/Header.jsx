@@ -7,6 +7,9 @@ import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import useMobile from "../hooks/useMobile";
+import { useGlobalContext } from "../provider/GlobalProvider";
+import { DisplayPriceInPKR } from "../Utils/DisplayPriceInPKR";
+import DisplayCartItem from "./DisplayCartItem";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
 
@@ -18,6 +21,14 @@ const Header = () => {
   const user = useSelector((state) => state.user);
 
   const [openUserMenu, setOpenUserMenu] = useState(false);
+
+  // get cart item from store
+  const cartItem = useSelector((state) => state.cartItem.cart);
+
+  const { totalPrice, totalQuantity } = useGlobalContext();
+
+  // open card section
+  const [openCartSection, setOpenCartSection] = useState(false);
 
   // login page navegate
   const navigate = useNavigate();
@@ -102,14 +113,26 @@ const Header = () => {
                 </button>
               )}
 
-              {/* Cart Icons */}
-              <button className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white">
+              {/* Cart button, Icons */}
+              <button
+                onClick={() => setOpenCartSection(!openCartSection)}
+                className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-2 rounded text-white"
+              >
                 <div className="animate-bounce ">
                   <BsCart4 size={26} />
                 </div>
-                <div className="font-semibold text-sm">
-                  <p>My cart</p>
-                </div>
+                {cartItem ? (
+                  <div>
+                    <p className="font-semibold text-sm">
+                      {totalQuantity} Items
+                    </p>
+                    <p className="font-semibold text-sm">
+                      {DisplayPriceInPKR(totalPrice)}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="font-semibold text-sm">My cart</p>
+                )}
               </button>
             </div>
           </div>
@@ -119,6 +142,10 @@ const Header = () => {
       <div className="container mx-auto p-2 lg:hidden">
         <Search />
       </div>
+      {/* display card section  */}
+      {openCartSection && (
+        <DisplayCartItem close={() => setOpenCartSection(false)} />
+      )}
     </header>
   );
 };

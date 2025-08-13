@@ -27,7 +27,8 @@ const auth = async (request, response, next) => {
     next();
   } catch (error) {
     return response.status(500).json({
-      message: error.message || error,
+      message: "You are not Authorized Please Login", //error.message || error,
+
       success: false,
       error: true,
     });

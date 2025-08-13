@@ -7,6 +7,7 @@ import Category from "../pages/Category";
 import ForgotPassword from "../pages/ForgotPassword";
 import ForgotPasswordOtpVerification from "../pages/ForgotPasswordOtpVerification";
 
+import CartMobilePage from "../pages/CartMobilePage";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import MyOrders from "../pages/MyOrders";
@@ -20,6 +21,7 @@ import SearchPage from "../pages/SearchPage";
 import SubCategory from "../pages/SubCategory";
 import UploadProduct from "../pages/UploadProduct";
 import UserMobileMenu from "../pages/UserMobileMenu";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -119,6 +121,10 @@ const router = createBrowserRouter([
       {
         path: "/product/:product/:id",
         element: <ProductDisplayPage />,
+      },
+      {
+        path: "cart",
+        element: <CartMobilePage />,
       },
     ],
   },

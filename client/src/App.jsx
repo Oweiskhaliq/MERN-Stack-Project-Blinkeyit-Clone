@@ -12,8 +12,11 @@ import {
   setLoadingCategory,
 } from "./store/productsSlice";
 import { setUserDetails } from "./store/userSlice";
+
 import Axios from "./Utils/Axios";
 import fetchedUserDetails from "./Utils/fetchedUserDetails";
+import CartMobile from "./components/CartMobile";
+import GlobalProvider from "./provider/GlobalProvider";
 
 function App() {
   const dispatch = useDispatch();
@@ -66,17 +69,21 @@ function App() {
     fetchUser();
     fetchedCategory();
     fetchedSubCategory();
+    //fetchCartItems();
   }, []);
 
   return (
-    <>
+    <GlobalProvider>
       <Header />
       <main>
         <Outlet />
       </main>
       <Footer />
       <Toaster />
-    </>
+      {/* mobile  response card */}
+
+      <CartMobile />
+    </GlobalProvider>
   );
 }
 
