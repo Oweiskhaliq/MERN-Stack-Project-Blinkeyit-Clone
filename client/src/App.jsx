@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import "./App.css";
 import summaryApi from "./common/summaryApi";
 import Footer from "./components/Footer";
@@ -19,6 +19,8 @@ import CartMobile from "./components/CartMobile";
 import GlobalProvider from "./provider/GlobalProvider";
 
 function App() {
+  const location = useLocation();
+
   const dispatch = useDispatch();
   // Fetch user details from backend
   const fetchUser = async () => {
@@ -81,8 +83,7 @@ function App() {
       <Footer />
       <Toaster />
       {/* mobile  response card */}
-
-      <CartMobile />
+      {location.pathname !== "/checkout" && <CartMobile />}
     </GlobalProvider>
   );
 }

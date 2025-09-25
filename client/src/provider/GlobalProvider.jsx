@@ -16,6 +16,7 @@ const GlobalProvider = ({ children }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalPriceWithOutDiscount, setTotalPriceWithOutDiscount] = useState(0);
+  const user = useSelector((state) => state.user);
 
   // get cart item from store
   const cartItem = useSelector((state) => state.cartItem.cart);
@@ -101,10 +102,17 @@ const GlobalProvider = ({ children }) => {
     }
   };
 
+  //empty the card items to when user log out
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch(handleAddToCart([]));
+  };
+
   //when the app load call the fetchCartItems
   useEffect(() => {
     fetchCartItems();
-  }, []);
+    handleLogout();
+  }, [user]);
 
   return (
     <GlobalContext.Provider

@@ -1,7 +1,8 @@
+import toast from "react-hot-toast";
 import { FaCaretRight } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import emptyCardImage from "../assets/empty_cart.webp";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import { DisplayPriceInPKR } from "../Utils/DisplayPriceInPKR";
@@ -12,6 +13,21 @@ const DisplayCartItem = ({ close }) => {
   const { totalPrice, totalPriceWithOutDiscount, totalQuantity } =
     useGlobalContext();
   const cartItems = useSelector((state) => state.cartItem.cart);
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  console.log("user", user);
+
+  //redirect to check out page
+  const redirectToCheckoutPage = () => {
+    if (user) {
+      navigate("/checkout");
+      if (close) {
+        close();
+      }
+      return;
+    }
+    toast.error("please login First.");
+  };
 
   return (
     <div className="bg-neutral-900 fixed top-0 bottom-0 left-0 right-0 bg-opacity-70 z-50">
@@ -115,7 +131,10 @@ const DisplayCartItem = ({ close }) => {
                   <div>
                     <div>{DisplayPriceInPKR(totalPrice)}</div>
                   </div>
-                  <button className="flex items-center gap-1 hover:">
+                  <button
+                    onClick={redirectToCheckoutPage}
+                    className="flex items-center gap-1 hover:"
+                  >
                     Proceed <FaCaretRight />
                   </button>
                 </div>

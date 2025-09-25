@@ -8,6 +8,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import ForgotPasswordOtpVerification from "../pages/ForgotPasswordOtpVerification";
 
 import CartMobilePage from "../pages/CartMobilePage";
+import CheckOutPage from "../pages/CheckOutPage";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import MyOrders from "../pages/MyOrders";
@@ -125,6 +126,10 @@ const router = createBrowserRouter([
       {
         path: "cart",
         element: <CartMobilePage />,
+      },
+      {
+        path: "checkout",
+        element: <CheckOutPage />,
       },
     ],
   },

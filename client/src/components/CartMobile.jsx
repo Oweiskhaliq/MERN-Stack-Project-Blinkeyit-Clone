@@ -16,7 +16,7 @@ const CartMobile = () => {
           <div className="bg-green-600 p-2 rounded text-neutral-100 text-sm flex items-center justify-between gap-3 lg:hidden">
             <div className="flex items-center gap-2">
               {/* card icon */}
-              <div p-2 bg-green-500 rounded w-fit>
+              <div className="p-2 bg-green-500 rounded w-fit">
                 <FaCartShopping />
               </div>
               {/* card price and quantity  */}
