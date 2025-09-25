@@ -5,6 +5,7 @@ import express from "express";
 import helmet from "helmet";
 import morgon from "morgan";
 import connectDB from "./config/connectDB.js";
+import addressRouter from "./routes/address.route.js";
 import cartRouter from "./routes/cart.route.js";
 import categoryRouter from "./routes/category.route.js";
 import productRouter from "./routes/product.route.js";
@@ -47,6 +48,7 @@ app.use("/api/file", ImageRouter);
 app.use("/api/subcategory", subCategoryRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/address", addressRouter);
 
 connectDB().then(() => {
   app.listen(PORT, () => {
