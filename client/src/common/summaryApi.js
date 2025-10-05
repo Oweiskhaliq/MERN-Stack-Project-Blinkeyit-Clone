@@ -131,6 +131,18 @@ const summaryApi = {
     url: "/api/address/create",
     method: "POST",
   },
+  getAddress: {
+    url: "/api/address/get",
+    method: "GET",
+  },
+  updateAddress: {
+    url: "/api/address/update",
+    method: "PUT",
+  },
+  deleteAddress: {
+    url: "/api/address/disable",
+    method: "DELETE",
+  },
 };
 
 export default summaryApi;

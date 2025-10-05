@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import AddAddress from "../components/AddAddress";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import { DisplayPriceInPKR } from "../Utils/DisplayPriceInPKR";
@@ -7,17 +8,54 @@ const CheckOutPage = () => {
   const { totalPrice, totalPriceWithOutDiscount, totalQuantity } =
     useGlobalContext();
   const [openAddress, setOpenAddress] = useState(false);
+  const addressList = useSelector((state) => state.addresses.addresses);
+  const [selectedAddress, setSelectedAddress] = useState(0);
+
   return (
     <section className="bg-blue-50">
       <div className="container  mx-auto p-4 flex flex-col lg:flex-row gap-5 justify-between ">
         {/* select address section  */}
         <div className="w-full">
           <h3 className="text-lg font-semibold">Choose Your Address</h3>
-          <div
-            onClick={() => setOpenAddress(true)}
-            className="h-16 bg-blue-50 border-2 border-dashed flex justify-center items-center cursor-pointer"
-          >
-            Add Address
+          <div className="bg-white p-2 grid gap-4">
+            {addressList?.map((address, index) => {
+              return (
+                <label htmlFor={"address" + index}>
+                  <div
+                    key={index}
+                    className={`flex gap-3 border-2 rounded p-3 hover:bg-blue-50 ${
+                      !address?.status && "hidden"
+                    }`}
+                  >
+                    <div className="p-5 ">
+                      <input
+                        onChange={(e) => setSelectedAddress(e.target.value)}
+                        type="radio"
+                        value={index}
+                        name="address"
+                        id={"address" + index}
+                      />
+                    </div>
+                    <div id="address">
+                      <p>{address?.address_line}</p>
+                      <p>{address?.city}</p>
+                      <p>{address?.state}</p>
+                      <p>
+                        {address?.country} - {address?.pincode}
+                      </p>
+                      <p>{address?.mobile}</p>
+                    </div>
+                  </div>
+                </label>
+              );
+            })}
+
+            <div
+              onClick={() => setOpenAddress(true)}
+              className=" h-16 bg-blue-50 border-2 border-dashed flex justify-center items-center cursor-pointer rounded"
+            >
+              Add Address
+            </div>
           </div>
         </div>
 

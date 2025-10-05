@@ -2,10 +2,13 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { MdClose } from "react-icons/md";
 import summaryApi from "../common/summaryApi";
+import { useGlobalContext } from "../provider/GlobalProvider";
 import Axios from "../Utils/Axios";
 import AxiosToastError from "../Utils/axiosToastError";
 const AddAddress = ({ close }) => {
   const { register, handleSubmit, reset } = useForm();
+
+  const { fetchUserAddress } = useGlobalContext();
 
   const onSubmit = async (data) => {
     try {
@@ -21,6 +24,7 @@ const AddAddress = ({ close }) => {
         if (close) {
           close();
           reset();
+          fetchUserAddress();
         }
       }
     } catch (error) {
