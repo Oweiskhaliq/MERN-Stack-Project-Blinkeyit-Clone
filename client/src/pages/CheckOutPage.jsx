@@ -1,18 +1,88 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Axios from "../Utils/Axios";
+import { DisplayPriceInPKR } from "../Utils/DisplayPriceInPKR";
+import AxiosToastError from "../Utils/axiosToastError";
+import summaryApi from "../common/summaryApi";
 import AddAddress from "../components/AddAddress";
 import { useGlobalContext } from "../provider/GlobalProvider";
-import { DisplayPriceInPKR } from "../Utils/DisplayPriceInPKR";
-
+import {loadStripe} from "@stripe/stripe-js";
 const CheckOutPage = () => {
-  const { totalPrice, totalPriceWithOutDiscount, totalQuantity } =
-    useGlobalContext();
+  const {
+    totalPrice,
+    totalPriceWithOutDiscount,
+    totalQuantity,
+    fetchCartItems,
+  } = useGlobalContext();
   const [openAddress, setOpenAddress] = useState(false);
   const addressList = useSelector((state) => state.addresses.addresses);
   const [selectedAddress, setSelectedAddress] = useState(0);
+  const cartItemList = useSelector((state) => state.cartItem.cart);
+  const navigate = useNavigate();
 
+  const handleCashOnDelivery = async () => {
+    try {
+      
+      const response = await Axios({
+        ...summaryApi.cashOnDeliveryOrder,
+        data: {
+          list_items: cartItemList,
+          addressId: addressList[selectedAddress]?._id,
+          subTotalAmt: totalPrice,
+          totalAmt: totalPrice,
+        },
+      });
+      const { data: responseData } = response;
+      if (responseData?.success) {
+        toast.success(responseData?.message);
+        if (fetchCartItems) {
+          fetchCartItems();
+        }
+        navigate("/success", {
+          state: {
+            text: "Order",
+          },
+        });
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    }
+  };
+
+  const handleOnlinePayment = async () => {
+    try {
+      toast.loading("Loading....")
+      const response = await Axios({
+        ...summaryApi.payment_url,
+        data: {
+          list_items: cartItemList,
+          addressId: addressList[selectedAddress]?._id,
+        },
+      });
+  
+      if (response.data.success) {
+        window.location.href = response.data.url; // ✅ FIX
+        toast.success(response.data.message);
+        if (fetchCartItems) {
+          fetchCartItems();
+        }
+        navigate("/success", {
+          state: {
+            text: "Order",
+          },
+        });
+      }
+    } catch (error) {
+      AxiosToastError(error);
+    }
+  };
+  
+  
   return (
     <section className="bg-blue-50">
+      
       <div className="container  mx-auto p-4 flex flex-col lg:flex-row gap-5 justify-between ">
         {/* select address section  */}
         <div className="w-full">
@@ -20,7 +90,7 @@ const CheckOutPage = () => {
           <div className="bg-white p-2 grid gap-4">
             {addressList?.map((address, index) => {
               return (
-                <label htmlFor={"address" + index}>
+                <label htmlFor={"address" }key={"addr"+ index}>
                   <div
                     key={index}
                     className={`flex gap-3 border-2 rounded p-3 hover:bg-blue-50 ${
@@ -92,17 +162,20 @@ const CheckOutPage = () => {
           </div>
           {/* buttons  */}
           <div className="w-full flex flex-col gap-4">
-            <button className="py-2 px-4 bg-green-600 hover:bg-green-700 rounded text-white font-semibold">
+            <button className="py-2 px-4 bg-green-600 hover:bg-green-700 rounded text-white font-semibold" onClick={()=> handleOnlinePayment()}>
               Online Payment
             </button>
-            <button className="py-2 px-4 border-2 border-green-600 font-semibold text-green-600 rounded hover:bg-green-600 hover:text-white">
+            <button
+              className="py-2 px-4 border-2 border-green-600 font-semibold text-green-600 rounded hover:bg-green-600 hover:text-white"
+              onClick={() => handleCashOnDelivery()}
+            >
               Cash On Delivery
             </button>
           </div>
         </div>
       </div>
 
-      {openAddress && <AddAddress close={() => setOpenAddress(false)} />}
+      {openAddress && <AddAddress close={() => setOpenAddress(false)} />} 
     </section>
   );
 };

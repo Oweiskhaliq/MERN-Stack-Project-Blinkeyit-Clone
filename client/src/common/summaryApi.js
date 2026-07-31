@@ -143,6 +143,14 @@ const summaryApi = {
     url: "/api/address/disable",
     method: "DELETE",
   },
+  cashOnDeliveryOrder: {
+    url: "/api/order/cash-on-delivery",
+    method: "POST",
+  },
+  payment_url:{
+    url:"/api/order/checkout",
+    method:"POST",
+  }
 };
 
 export default summaryApi;

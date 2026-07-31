@@ -126,7 +126,7 @@ const GlobalProvider = ({ children }) => {
   //when the app load call the fetchCartItems
   useEffect(() => {
     fetchCartItems();
-    handleLogout();
+    // handleLogout();
     fetchUserAddress();
   }, [user]);
 

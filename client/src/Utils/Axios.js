@@ -2,14 +2,16 @@ import axios from "axios";
 import SummaryApi, { baseURL } from "../common/summaryApi";
 
 const Axios = axios.create({
-  baseURL: baseURL,
+  baseURL,
   withCredentials: true,
 });
 
-//sending access token in the header
+/* ===============================
+   REQUEST INTERCEPTOR
+================================ */
 Axios.interceptors.request.use(
-  async (config) => {
-    const accessToken = localStorage.getItem("accesstoken");
+  (config) => {
+    const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
@@ -17,54 +19,54 @@ Axios.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-//extend the life span of access token with
-// the help refresh
-Axios.interceptors.request.use(
-  (response) => {
-    return response;
-  },
+/* ===============================
+   RESPONSE INTERCEPTOR (REFRESH)
+================================ */
+Axios.interceptors.response.use(
+  (response) => response,
   async (error) => {
-    let originRequest = error.config;
+    const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originRequest.retry) {
-      originRequest.retry = true;
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
 
       const refreshToken = localStorage.getItem("refreshToken");
 
-      if (refreshToken) {
-        const newAccessToken = await refreshAccessToken(refreshToken);
+      if (!refreshToken) {
+        return Promise.reject(error);
+      }
+
+      try {
+        const response = await axios({
+          ...SummaryApi.refreshToken,
+          baseURL,
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+          withCredentials: true,
+        });
+
+        const newAccessToken = response.data?.data?.accessToken;
 
         if (newAccessToken) {
-          originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-          return Axios(originRequest);
+          localStorage.setItem("accessToken", newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return Axios(originalRequest);
         }
+      } catch (err) {
+        localStorage.clear();
+        return Promise.reject(err);
       }
     }
 
     return Promise.reject(error);
   }
 );
-
-const refreshAccessToken = async (refreshToken) => {
-  try {
-    const response = await Axios({
-      ...SummaryApi.refreshToken,
-      headers: {
-        Authorization: `Bearer ${refreshToken}`,
-      },
-    });
-
-    const accessToken = response.data.data.accessToken;
-    localStorage.setItem("accesstoken", accessToken);
-    return accessToken;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 export default Axios;

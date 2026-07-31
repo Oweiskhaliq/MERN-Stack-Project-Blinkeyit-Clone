@@ -15,8 +15,6 @@ const DisplayCartItem = ({ close }) => {
   const cartItems = useSelector((state) => state.cartItem.cart);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
-  console.log("user", user);
-
   //redirect to check out page
   const redirectToCheckoutPage = () => {
     if (user) {
@@ -63,7 +61,7 @@ const DisplayCartItem = ({ close }) => {
                 {cartItems[0] &&
                   cartItems.map((item, index) => {
                     return (
-                      <div className="flex items-center w-full gap-4">
+                      <div key={"card_items"+index} className="flex items-center w-full gap-4">
                         <div className="w-16 min-h-16 min-w-16 h-16 bg-red-500 border rounded">
                           <img
                             src={item?.productId?.image[0]}

@@ -82,6 +82,10 @@ export const updateCategoryController = async (request, response) => {
       success: true,
       data: updateCategory,
     });
+    console.log(await CategoryModel.countDocuments());
+    console.log(await ProductModel.countDocuments());
+    console.log(await SubCategoryModel.countDocuments());
+
   } catch (error) {
     return response.status(500).json({
       message: error.message || error,
@@ -130,4 +134,5 @@ export const deleteCategoryController = async (request, response) => {
       error: true,
     });
   }
+
 };

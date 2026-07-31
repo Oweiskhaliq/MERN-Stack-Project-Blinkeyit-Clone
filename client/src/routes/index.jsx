@@ -7,6 +7,7 @@ import Category from "../pages/Category";
 import ForgotPassword from "../pages/ForgotPassword";
 import ForgotPasswordOtpVerification from "../pages/ForgotPasswordOtpVerification";
 
+import Cancel from "../pages/Cancel";
 import CartMobilePage from "../pages/CartMobilePage";
 import CheckOutPage from "../pages/CheckOutPage";
 import Home from "../pages/Home";
@@ -20,6 +21,7 @@ import Register from "../pages/Register";
 import ResetPassword from "../pages/ResetPassword";
 import SearchPage from "../pages/SearchPage";
 import SubCategory from "../pages/SubCategory";
+import Success from "../pages/Success";
 import UploadProduct from "../pages/UploadProduct";
 import UserMobileMenu from "../pages/UserMobileMenu";
 
@@ -130,6 +132,14 @@ const router = createBrowserRouter([
       {
         path: "checkout",
         element: <CheckOutPage />,
+      },
+      {
+        path: "/success",
+        element: <Success />,
+      },
+      {
+        path: "/cancel",
+        element: <Cancel />,
       },
     ],
   },
