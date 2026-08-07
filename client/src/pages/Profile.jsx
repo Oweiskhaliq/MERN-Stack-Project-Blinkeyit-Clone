@@ -7,7 +7,7 @@ import { setUserDetails } from "../store/userSlice";
 import Axios from "../Utils/Axios";
 import AxiosToastError from "../Utils/axiosToastError";
 import fetchedUserDetails from "../Utils/fetchedUserDetails";
-import summaryApi from "../common/SummaryApi";
+import summaryApi from "../common/summaryApi";
 
 const Profile = () => {
   const dispatch = useDispatch();
