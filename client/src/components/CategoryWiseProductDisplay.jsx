@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import summaryApi from "../common/SummaryApi";
+import summaryApi from "../common/summaryApi";
 import Axios from "../Utils/Axios";
 import AxiosToastError from "../Utils/axiosToastError";
 import { ValidURLConverter } from "../Utils/ValidURLConverter";
