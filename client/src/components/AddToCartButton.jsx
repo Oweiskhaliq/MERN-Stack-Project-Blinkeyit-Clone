@@ -6,8 +6,10 @@ import summaryApi from "../common/summaryApi";
 import { useGlobalContext } from "../provider/GlobalProvider";
 import Axios from "../Utils/Axios";
 import AxiosToastError from "../Utils/axiosToastError";
+import { useNavigate } from "react-router-dom";
 
 const AddToCartButton = ({ data }) => {
+  const navigate = useNavigate();
   const { fetchCartItems, updateCardItem, deleteCartItem } = useGlobalContext();
   const [loading, setLoading] = useState(false);
   const cartItems = useSelector((state) => state.cartItem.cart);
@@ -81,8 +83,8 @@ const AddToCartButton = ({ data }) => {
         }
       }
     } catch (error) {
-      console.log(error, "Errorsss");
       AxiosToastError(error);
+       navigate("/login");
     } finally {
       setLoading(false);
     }

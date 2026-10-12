@@ -1,4 +1,4 @@
-console.log('All env variables:', import.meta.env);
+
 export let baseURL = import.meta.env.VITE_API_URL;
 
 const summaryApi = {

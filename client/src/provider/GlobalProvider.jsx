@@ -55,7 +55,7 @@ const GlobalProvider = ({ children }) => {
         ...summaryApi.getCartItems,
       });
       const { data: responseData } = response;
-      if (responseData.success) {
+      if (responseData?.success) {
         dispatch(handleAddToCart(responseData.data));
       }
     } catch (error) {
@@ -133,6 +133,7 @@ const GlobalProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
+        handleLogout,
         fetchCartItems,
         updateCardItem,
         deleteCartItem,

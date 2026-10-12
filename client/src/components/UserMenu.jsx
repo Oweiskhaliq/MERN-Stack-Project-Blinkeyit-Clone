@@ -8,6 +8,7 @@ import Axios from "../Utils/Axios";
 import axiosToastError from "../Utils/axiosToastError";
 import Divider from "./Divider";
 import IsAdmin from "./IsAdmin";
+import { handleAddToCart } from "../store/cartProductSlice";
 
 const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
@@ -24,6 +25,7 @@ const UserMenu = ({ close }) => {
         dispatch(logout());
         localStorage.clear();
         toast.success(response.data.message);
+         dispatch(handleAddToCart([]));
         navigate("/");
       }
     } catch (error) {

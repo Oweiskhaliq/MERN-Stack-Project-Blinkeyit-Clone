@@ -20,18 +20,29 @@ import GlobalProvider from "./provider/GlobalProvider";
 
 function App() {
   const location = useLocation();
-
   const dispatch = useDispatch();
-  // Fetch user details from backend
+
+  // Fetch user details from backend safely
   const fetchUser = async () => {
+    // 1. Guard: Stop the request if no user is signed in yet
+    if (!localStorage.getItem("accessToken")) {
+      console.log("No access token found. Skipping user profile fetch.");
+      return; 
+    }
+
     try {
-      const userData = await fetchedUserDetails();
-      dispatch(setUserDetails(userData.data.data));
+      const response = await fetchedUserDetails();
+      
+      // 2. Safe parsing: Verify deep fields exist before dispatching
+      if (response?.data?.data) {
+        dispatch(setUserDetails(response.data.data));
+      }
     } catch (error) {
-      console.error("Failed to fetch user:", error);
+      console.error("Failed to fetch user:", error.message || error);
     }
   };
-  // fetch Category and set to store
+
+  // Fetch Category and set to store
   const fetchedCategory = async () => {
     try {
       dispatch(setLoadingCategory(true));
@@ -39,39 +50,36 @@ function App() {
         ...summaryApi.getCategory,
       });
       const { data: responseData } = response;
-      if (responseData.success) {
+      if (responseData?.success) {
         dispatch(setAllCategory(responseData.data));
-        // setCategoryData(responseData.data);
       }
     } catch (error) {
-      AxiosToastError(error);
+      console.error("Failed to fetch categories:", error);
     } finally {
       dispatch(setLoadingCategory(false));
     }
   };
 
-  // fetch Category and set to store
+  // Fetch SubCategory and set to store
   const fetchedSubCategory = async () => {
     try {
       const response = await Axios({
         ...summaryApi.getSubCategory,
       });
       const { data: responseData } = response;
-      if (responseData.success) {
+      if (responseData?.success) {
         dispatch(setAllSubCategory(responseData.data));
-        // setCategoryData(responseData.data);
       }
     } catch (error) {
-      AxiosToastError(error);
+      console.error("Failed to fetch subcategories:", error);
     }
   };
 
-  // On first load, fetch user from server
+  // On first load, execute all bootstrapping API calls
   useEffect(() => {
     fetchUser();
     fetchedCategory();
     fetchedSubCategory();
-    //fetchCartItems();
   }, []);
 
   return (
@@ -82,7 +90,7 @@ function App() {
       </main>
       <Footer />
       <Toaster />
-      {/* mobile  response card */}
+      {/* Mobile response card */}
       {location.pathname !== "/checkout" && <CartMobile />}
     </GlobalProvider>
   );

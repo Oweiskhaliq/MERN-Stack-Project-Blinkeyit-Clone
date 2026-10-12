@@ -114,12 +114,12 @@ export const OnlinePaymentController = async (request, response) => {
       cancel_url: `${process.env.FORNTEND_URL}/cancel`,
     });
 
-    // //remove item from cart
+    //remove item from cart
     // const removeItemFromCart = await CartProductModel.deleteMany({
     //   userId: userId,
     // });
 
-    // //    remove shapping address from user
+    //    remove shapping address from user
     // const updateInUser = await UserModel.updateOne(
     //   { _id: userId },
     //   { shopping_cart: [] }
@@ -139,45 +139,46 @@ export const OnlinePaymentController = async (request, response) => {
   }
 };
 
-//getOrderProductItems
-const getOrderProductItems = async({
-  lineItems,
-  userId,
-  addressId,
-  paymentId,
-  payment_status,
-})=>{
-  const productList = []
+// //getOrderProductItems
+// const getOrderProductItems = async({
+//   lineItems,
+//   userId,
+//   addressId,
+//   paymentId,
+//   payment_status,
+// })=>{
+//   const productList = []
 
-  if(lineItems?.data?.length){
-      for(const item of lineItems.data){
-          const product = await Stripe.products.retrieve(item.price.product)
+//   if(lineItems?.data?.length){
+//       for(const item of lineItems.data){
+//           const product = await Stripe.products.retrieve(item.price.product)
 
-          const paylod = {
-              userId : userId,
-              orderId : `ORD-${new mongoose.Types.ObjectId()}`,
-              productId : product.metadata.productId, 
-              product_details : {
-                  name : product.name,
-                  image : product.images
-              } ,
-              paymentId : paymentId,
-              payment_status : payment_status,
-              delivery_address : addressId,
-              subTotalAmt  : Number(item.amount_total / 100),
-              totalAmt  :  Number(item.amount_total / 100),
-          }
+//           const paylod = {
+//               userId : userId,
+//               orderId : `ORD-${new mongoose.Types.ObjectId()}`,
+//               productId : product.metadata.productId, 
+//               product_details : {
+//                   name : product.name,
+//                   image : product.images
+//               } ,
+//               paymentId : paymentId,
+//               payment_status : payment_status,
+//               delivery_address : addressId,
+//               subTotalAmt  : Number(item.amount_total / 100),
+//               totalAmt  :  Number(item.amount_total / 100),
+//           }
 
-          productList.push(paylod)
-      }
-  }
+//           productList.push(paylod)
+//       }
+//   }
 
-  console.log("finnal product",productList)
-}
+//   console.log("finnal product",productList)
+// }
 
-// webhook function 
-// http://localhost:8080/api/order/webhook
+// // webhook function 
+// // http://localhost:8080/api/order/webhook
 
+// 8080/api/order/webhook
 export const StripeWebHook =  async (request,response)=>{
   const event = request.body;
     const endPointSecret = process.env.STRIPE_ENDPOINT_WEBHOOK_SECRET_KEY
@@ -190,31 +191,31 @@ export const StripeWebHook =  async (request,response)=>{
       const session = event.data.object;
       const lineItems = await Stripe.checkout.sessions.listLineItems(session.id)
       console.log("lineItems",lineItems)
-      const userId = session.metadata.userId
-      const orderProduct = await getOrderProductItems(
-        {
-            lineItems : lineItems,
-            userId : userId,
-            addressId : session.metadata.addressId,
-            paymentId  : session.payment_intent,
-            payment_status : session.payment_status,
-        })
+      // const userId = session.metadata.userId
+      // const orderProduct = await getOrderProductItems(
+      //   {
+      //       lineItems : lineItems,
+      //       userId : userId,
+      //       addressId : session.metadata.addressId,
+      //       paymentId  : session.payment_intent,
+      //       payment_status : session.payment_status,
+      //   })
     
-      const order = await OrderModel.insertMany(orderProduct)
+      // const order = await OrderModel.insertMany(orderProduct)
 
-        console.log(order)
-        if(Boolean(order[0])){
-            const removeCartItems = await  UserModel.findByIdAndUpdate(userId,{
-                shopping_cart : []
-            })
-            const removeCartProductDB = await CartProductModel.deleteMany({ userId : userId})
-        }
+      //   console.log(order)
+      //   if(Boolean(order[0])){
+      //       const removeCartItems = await  UserModel.findByIdAndUpdate(userId,{
+      //           shopping_cart : []
+      //       })
+      //       const removeCartProductDB = await CartProductModel.deleteMany({ userId : userId})
+      //   }
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
 
-//   // Return a response to acknowledge receipt of the event
+   // Return a response to acknowledge receipt of the event
   response.json({received: true});
 }
 //GET 

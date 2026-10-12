@@ -47,7 +47,7 @@ console.log("login" ,response.data)
       if (response.data.success) {
         toast.success(response.data.message);
         localStorage.setItem("accesstoken", response.data.data.accesstoken);
-        localStorage.setItem("refreshToken", response.data.data.refreshToken);
+        localStorage.setItem("refreshtoken", response.data.data.refreshToken);
 
         const userDetails = await fetchedUserDetails();
         const resData = userDetails.data.data;
